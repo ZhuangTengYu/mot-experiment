@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="工作记忆与多目标追踪实验。请使用电脑浏览器和鼠标完成测试，并在结束后下载结果。">
+  <meta name="color-scheme" content="light">
+  <title>多目标追踪 · 工作记忆实验</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./mot-core.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <main id="welcome" class="shell">
+    <header class="site-header"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>认知实验室<span class="brand-divider">/</span><span class="brand-sub">工作记忆</span></a><span class="header-note">电脑浏览器 · 鼠标操作</span></header>
+    <section class="intro">
+      <p class="eyebrow">MULTIPLE OBJECT TRACKING</p>
+      <h1>你能同时追踪<br>几个移动的目标？</h1>
+      <p class="intro-text">记住闪烁的小球，在运动中持续追踪它们。<br>小球停下后，选出你记住的目标。</p>
+      <div class="facts"><span><b>8</b> 个小球</span><span><b>3–6</b> 个目标</span><span>约 <b>10</b> 分钟</span></div>
+    </section>
+    <div class="welcome-grid">
+      <section class="instructions-card" aria-labelledby="how-title">
+        <h2 id="how-title">测试怎么做</h2>
+        <ol class="steps">
+          <li><span class="step-num">01</span><div><h3>记住闪烁的目标</h3><p>目标会闪烁 3 秒。记住它们的位置。</p></div></li>
+          <li><span class="step-num">02</span><div><h3>持续追踪 6 秒</h3><p>所有小球变成同色并开始运动，请一直追踪原来的目标。</p></div></li>
+          <li><span class="step-num">03</span><div><h3>点选并提交</h3><p>停止后用鼠标选择，重复点击可取消。选够提示的数量后按 <kbd>空格</kbd> 提交。</p></div></li>
+        </ol>
+        <div class="protocol"><span>4 次练习</span><span aria-hidden="true">→</span><span>40 次正式测试</span><span aria-hidden="true">→</span><span>下载结果</span></div>
+        <p class="quiet-note">练习会显示答案；正式测试只提示已记录。每 10 次可以休息。</p>
+      </section>
+      <section class="start-card" aria-labelledby="start-title">
+        <div class="card-topline"><span class="status-dot"></span><span>准备开始</span></div>
+        <h2 id="start-title">填写你的受试编号</h2>
+        <form id="start-form">
+          <label for="participant">实验组织者分配的编号</label>
+          <input id="participant" name="participant" type="text" value="P01" maxlength="24" autocomplete="off" spellcheck="false" pattern="[A-Za-z][A-Za-z0-9_-]{0,23}" required aria-describedby="participant-help">
+          <p id="participant-help" class="field-help">例如 P01、P02 或 P03，请使用分配给你的编号。</p>
+          <div class="settings-line"><span>初始速度 <b>160</b></span><span>每个条件 <b>10 次</b></span></div>
+          <p class="device-status" id="device-status" role="status"></p>
+          <button id="fullscreen-button" class="button button-secondary" type="button">进入全屏</button>
+          <label class="check-label"><input id="consent" type="checkbox" required><span>我已了解任务，自愿参与，并会在安静的环境中独立完成。</span></label>
+          <button id="start-button" class="button button-primary" type="submit">开始测试 <span aria-hidden="true">→</span></button>
+          <p id="start-error" class="error-text" role="alert"></p>
+        </form>
+        <button id="demo-button" class="text-button" type="button">先试用流程（非实测）</button>
+      </section>
+    </div>
+    <section class="session-note"><strong>测试期间请保持当前页面</strong><p>使用电脑和鼠标，浏览器缩放设为 100%。切换标签页、窗口失焦或改变窗口大小会中止本次测试。可随时按 Esc 结束；中止记录不能作为完整结果。</p></section>
+    <section id="recent-section" class="recent-section" hidden><h2>此浏览器中保存的记录</h2><p class="quiet-note">可再次下载之前的结果。中止记录仅供核查，不能作为完成测试的数据。</p><div id="recent-list"></div></section>
+    <footer class="site-footer"><span>结果保存在当前浏览器，完成后请下载并发给实验组织者。</span><span>网页实验 1.0.0</span></footer>
+  </main>
+  <section id="stage" class="stage" aria-label="多目标追踪实验" hidden>
+    <canvas id="experiment-canvas" width="1280" height="800" aria-label="八个小球的追踪与选择区域"></canvas>
+    <button id="stop-button" type="button" class="stop-button">结束本次测试</button>
+    <div id="message-overlay" class="message-overlay" hidden><div class="message-card"><p id="message-eyebrow" class="eyebrow"></p><h2 id="message-title"></h2><p id="message-body"></p><button id="message-button" class="button button-primary" type="button"></button></div></div>
+    <p id="live-status" class="sr-only" aria-live="polite"></p>
+  </section>
+  <main id="result-panel" class="result-shell" hidden>
+    <p id="result-tag" class="eyebrow"></p><h1 id="result-title"></h1><p id="result-description" class="result-description"></p>
+    <div id="result-summary" class="result-summary"></div>
+    <div class="result-actions"><button id="download-json" class="button button-primary" type="button">下载完整结果 JSON</button><button id="download-csv" class="button button-secondary" type="button">另存试次 CSV（可选）</button></div>
+    <p id="download-notice" class="quiet-note" role="status"></p>
+    <p class="return-note">请把下载的 JSON 文件私下发给实验组织者。此页面不会自动上传你的实验结果。</p>
+    <button id="back-button" class="text-button" type="button">返回首页</button>
+  </main>
+  <noscript><p>此实验需要启用 JavaScript，请使用电脑浏览器打开。</p></noscript>
+</body>
+</html>
